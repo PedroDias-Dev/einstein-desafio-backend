@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/prisma-client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Survey {
+  id           Int        @id @default(autoincrement())
+  publicTarget String // Público-alvo da pesquisa
+  stars        Int // Quantidade de estrelas (1-5)
+  email        String // E-mail para contato
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  questions    Question[] // Relacionamento com as perguntas
+  responses    Response[] // Relacionamento com as respostas
+}
+
+model Question {
+  id       Int    @id @default(autoincrement())
+  text     String // Texto da pergunta
+  surveyId Int // Relacionamento com a pesquisa
+  survey   Survey @relation(fields: [surveyId], references: [id])
+}
+
+model Response {
+  id           Int      @id @default(autoincrement())
+  surveyId     Int // Relacionamento com a pesquisa
+  publicTarget String // Público-alvo para quem foi preenchida
+  stars        Int // Quantidade de estrelas (1-5)
+  email        String // E-mail para contato
+  createdAt    DateTime @default(now())
+  survey       Survey   @relation(fields: [surveyId], references: [id])
+}
