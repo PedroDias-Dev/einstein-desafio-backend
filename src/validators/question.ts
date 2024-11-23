@@ -12,4 +12,5 @@ export const questionSchema = z.object({
     .min(1, { message: "O ID da pesquisa é obrigatório." })
     .optional()
     .nullable(),
+  required: z.boolean().optional(),
 });

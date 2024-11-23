@@ -30,6 +30,7 @@ model Survey {
 model Question {
   id               Int                @id @default(autoincrement())
   text             String // Texto da pergunta
+  required         Boolean            @default(false) // Se a pergunta é obrigatória
   surveyId         Int // Relacionamento com a pesquisa
   survey           Survey             @relation(fields: [surveyId], references: [id])
   QuestionResponse QuestionResponse[]

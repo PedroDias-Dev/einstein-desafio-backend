@@ -16,6 +16,9 @@ class SurveyService {
           create: data.questions,
         },
       },
+      include: {
+        questions: true,
+      },
     });
 
     return survey;
