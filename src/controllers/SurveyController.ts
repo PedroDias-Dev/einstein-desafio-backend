@@ -9,6 +9,14 @@ class SurveyController {
     );
     res.status(201).json(survey);
   }
+
+  static async updateSurvey(req: Request, res: Response) {
+    const survey = await SurveyService.updateSurvey(
+      req.params.id as unknown as number,
+      req.body as unknown as SurveyInterface
+    );
+    res.status(200).json(survey);
+  }
 }
 
 export default SurveyController;
