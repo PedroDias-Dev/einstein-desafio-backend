@@ -27,6 +27,24 @@ class ResponseController {
       next(error);
     }
   }
+
+  static async exportResponsesCSV(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const responses = await ResponseService.exportResponsesCSV(
+        req.body as unknown as {
+          publicTarget: string;
+          orderByStars?: "asc" | "desc";
+        }
+      );
+      res.status(200).json(responses);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default ResponseController;
