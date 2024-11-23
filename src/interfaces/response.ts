@@ -1,7 +1,12 @@
 import { Prisma } from "../../prisma/generated/prisma-client";
+import { QuestionResponseInterface } from "./questionResponse";
 import { SurveyInterface } from "./survey";
 
-export type Response = Prisma.ResponseGetPayload<{}>;
+export type Response = Prisma.ResponseGetPayload<{
+  include: {
+    survey: true;
+  };
+}>;
 
 export interface ResponseInterface {
   id: number;
@@ -11,4 +16,5 @@ export interface ResponseInterface {
   email: string;
   createdAt: Date;
   survey: SurveyInterface;
+  questionResponses: QuestionResponseInterface[];
 }

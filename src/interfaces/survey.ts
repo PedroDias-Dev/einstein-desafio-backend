@@ -11,8 +11,8 @@ export type Survey = Prisma.SurveyGetPayload<{
 
 export interface SurveyInterface {
   id?: number;
+  title: string;
   publicTarget: string;
-  stars: number;
   email: string;
   createdAt?: Date;
   updatedAt?: Date;
