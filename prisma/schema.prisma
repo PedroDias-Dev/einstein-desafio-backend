@@ -18,8 +18,8 @@ datasource db {
 
 model Survey {
   id           Int        @id @default(autoincrement())
+  title        String // Título da pesquisa
   publicTarget String // Público-alvo da pesquisa
-  stars        Int // Quantidade de estrelas (1-5)
   email        String // E-mail para contato
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
@@ -28,18 +28,29 @@ model Survey {
 }
 
 model Question {
-  id       Int    @id @default(autoincrement())
-  text     String // Texto da pergunta
-  surveyId Int // Relacionamento com a pesquisa
-  survey   Survey @relation(fields: [surveyId], references: [id])
+  id               Int                @id @default(autoincrement())
+  text             String // Texto da pergunta
+  surveyId         Int // Relacionamento com a pesquisa
+  survey           Survey             @relation(fields: [surveyId], references: [id])
+  QuestionResponse QuestionResponse[]
 }
 
 model Response {
-  id           Int      @id @default(autoincrement())
-  surveyId     Int // Relacionamento com a pesquisa
-  publicTarget String // Público-alvo para quem foi preenchida
-  stars        Int // Quantidade de estrelas (1-5)
-  email        String // E-mail para contato
-  createdAt    DateTime @default(now())
-  survey       Survey   @relation(fields: [surveyId], references: [id])
+  id                Int                @id @default(autoincrement())
+  surveyId          Int // Relacionamento com a pesquisa
+  publicTarget      String // Público-alvo para quem foi preenchida
+  stars             Int // Quantidade de estrelas (1-5)
+  email             String // E-mail para contato
+  createdAt         DateTime           @default(now())
+  survey            Survey             @relation(fields: [surveyId], references: [id])
+  questionResponses QuestionResponse[]
+}
+
+model QuestionResponse {
+  id         Int      @id @default(autoincrement())
+  questionId Int // Relacionamento com a pergunta
+  responseId Int // Relacionamento com a resposta
+  question   Question @relation(fields: [questionId], references: [id])
+  response   Response @relation(fields: [responseId], references: [id])
+  answer     String //
 }
