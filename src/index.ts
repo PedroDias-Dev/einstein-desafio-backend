@@ -17,10 +17,10 @@ app.get("/", (req: Request, res: Response) => {
   res.send("The server is running");
 });
 
-app.use(errorHandler);
-
 app.use("/api/v1/survey", SurveyRouter);
 app.use("/api/v1/response", ResponseRouter);
+
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
