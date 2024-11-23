@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  backend:
+    image: node:20
+    container_name: node_backend
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DATABASE_URL=mysql://user:user_password@mysql:3306/surveys
+    depends_on:
+      - mysql
+    command: >
+      sh -c "
+      npm install &&
+      npx prisma migrate deploy &&
+      npm run dev
+      "
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: surveys
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
