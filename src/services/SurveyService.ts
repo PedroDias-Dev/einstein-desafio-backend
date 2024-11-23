@@ -21,7 +21,7 @@ class SurveyService {
       },
     });
 
-    return survey;
+    return { survey };
   }
 
   static async updateSurvey(id: number, data: SurveyInterface) {
@@ -63,7 +63,7 @@ class SurveyService {
       },
     });
 
-    return survey;
+    return { survey };
   }
 }
 

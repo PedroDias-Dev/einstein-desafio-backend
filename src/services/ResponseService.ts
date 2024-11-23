@@ -17,7 +17,7 @@ class ResponseService {
       throw new Error("A pesquisa não foi encontrada.");
     }
 
-    const Response = await prisma.response.create({
+    const response = await prisma.response.create({
       data: {
         stars: data.stars,
         publicTarget: data.publicTarget,
@@ -53,6 +53,7 @@ class ResponseService {
       const question = await prisma.question.findUnique({
         where: {
           id: questionResponse.questionId,
+          surveyId: data.surveyId,
         },
       });
 
@@ -71,7 +72,7 @@ class ResponseService {
       });
     }
 
-    return Response;
+    return { response };
   }
 
   static async listResponses(data: {
@@ -79,6 +80,10 @@ class ResponseService {
     orderByStars?: "asc" | "desc";
   }) {
     const { publicTarget, orderByStars } = data;
+
+    if (orderByStars && !["asc", "desc"].includes(orderByStars)) {
+      throw new Error("Ordem inválida.");
+    }
 
     const responses = await prisma.response.findMany({
       where: {
