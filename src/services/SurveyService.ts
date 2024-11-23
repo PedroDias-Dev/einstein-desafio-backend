@@ -1,8 +1,12 @@
 import prisma from "db/prisma";
+import { validateSchema } from "helpers/validator";
 import { SurveyInterface } from "interfaces/survey";
+import { surveySchema } from "validators/survey";
 
 class SurveyService {
   static async createSurvey(data: SurveyInterface) {
+    validateSchema(surveySchema, data);
+
     const survey = await prisma.survey.create({
       data: {
         title: data.title,
@@ -19,7 +23,7 @@ class SurveyService {
 
   static async updateSurvey(id: number, data: SurveyInterface) {
     if (!id) {
-      throw new Error("Id is required");
+      throw new Error("Informe o id da pesquisa.");
     }
 
     id = Number(id);
@@ -31,8 +35,10 @@ class SurveyService {
     });
 
     if (!survey_found) {
-      throw new Error("Survey not found");
+      throw new Error("A pesquisa não foi encontrada.");
     }
+
+    validateSchema(surveySchema, data);
 
     const survey = await prisma.survey.update({
       where: {
@@ -48,6 +54,9 @@ class SurveyService {
             data: question,
           })),
         },
+      },
+      include: {
+        questions: true,
       },
     });
 
